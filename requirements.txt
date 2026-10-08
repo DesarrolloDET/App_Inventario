@@ -1,0 +1,43 @@
+
+# ============================================
+# MEJIA TURNOS - Dependencias del backend
+# ============================================
+
+# --- Framework web ---
+fastapi==0.142.3
+uvicorn==0.54.0
+starlette==1.7.0
+
+# --- Validacion / Settings ---
+pydantic==2.13.5
+pydantic_core==2.46.5
+pydantic-settings==2.12.0
+annotated-types==0.8.0
+annotated-doc==0.0.5
+typing_extensions==4.16.0
+typing-inspection==0.4.4
+
+# --- ORM / Base de datos ---
+SQLAlchemy==2.1.4
+psycopg[binary]==3.3.6
+alembic==1.20.0
+Mako==1.4.3
+MarkupSafe==3.0.4
+
+# --- Seguridad ---
+argon2-cffi==25.1.0
+argon2-cffi-bindings 26.1.0
+PyJWT==2.15.1
+cffi==2.1.1
+pycparser==2.22
+
+# --- Utilidades ---
+python-dotenv==1.2.4
+click==8.5.0
+anyio==4.15.1
+h11==0.16.0
+idna==3.20
+tzdata==2026.5
+
+# --- Observabilidad ---
+opentelemetry-api==1.45.1
