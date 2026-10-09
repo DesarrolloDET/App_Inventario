@@ -11,6 +11,7 @@ from app.routers.auth import router as auth_router
 from app.routers.puertos import router as puertos_router
 from app.routers.materias_primas import router as materias_primas_router
 from app.routers.conductores import router as conductores_router
+from app.routers.transportadoras import router as transportadoras_router
 
 
 # ---------------------------------------------------------------------------
@@ -41,6 +42,7 @@ app.include_router(auth_router, prefix=API_V1_PREFIX)
 app.include_router(puertos_router, prefix=API_V1_PREFIX)
 app.include_router(materias_primas_router, prefix=API_V1_PREFIX)
 app.include_router(conductores_router, prefix=API_V1_PREFIX)
+app.include_router(transportadoras_router, prefix=API_V1_PREFIX)
 
 
 # ---------------------------------------------------------------------------
