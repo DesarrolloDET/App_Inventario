@@ -110,6 +110,12 @@ class ProgramacionDetalle(Base):
         nullable=False
     )
 
+    puerto_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("puertos.puerto_id"),
+        nullable=False
+    )
+
     cantidad_vehiculos: Mapped[int] = mapped_column(
         Integer,
         nullable=False
@@ -122,6 +128,8 @@ class ProgramacionDetalle(Base):
     transportadora: Mapped["Transportadora"] = relationship()
 
     materia_prima: Mapped["MateriaPrima"] = relationship()
+
+    puerto: Mapped["Puerto"] = relationship()
 
     cupos: Mapped[list["Cupo"]] = relationship(
         back_populates="programacion_detalle",
@@ -144,6 +152,10 @@ class ProgramacionDetalle(Base):
     Index(
         "idx_prog_det_materia",
         "materia_prima_id"
+    ),
+        Index(
+        "idx_prog_det_puerto",
+        "puerto_id"
     ),
 )
 

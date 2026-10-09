@@ -170,6 +170,18 @@ class Cita(Base):
         nullable=True
     )
 
+    fecha_hora_llegada_parqueadero: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True
+    )
+
+    # Inicio de procedimientos previos (toma de muestras, controles).
+    # Se registra despues de la llegada al parqueadero.
+    fecha_hora_inicio_previos: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True
+    )
+
     estado: Mapped[str] = mapped_column(
         String(20),
         nullable=False,
@@ -192,6 +204,7 @@ class Cita(Base):
         back_populates="cita",
         cascade="all, delete-orphan"
     )
+    
     __table_args__ = (
     Index(
         "idx_citas_estado",
@@ -204,6 +217,10 @@ class Cita(Base):
     Index(
         "idx_citas_llegada",
         "fecha_hora_llegada"
+    ),
+    Index(
+        "idx_citas_llegada_parqueadero",
+        "fecha_hora_llegada_parqueadero"
     ),
     Index(
         "uq_cupo_cita_activa",
