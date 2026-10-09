@@ -19,6 +19,8 @@ Diseno:
 
 from __future__ import annotations
 
+from app.core.dependencies import CurrentUser
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -134,3 +136,4 @@ def me(usuario: CurrentUser) -> UsuarioActualResponse:
         roles=[rol.nombre for rol in usuario.roles],
         activo=usuario.activo,
     )
+
