@@ -1,12 +1,22 @@
 """
 Punto de entrada de la aplicacion FastAPI MEJIA TURNOS.
 
+
 """
 
 from fastapi import FastAPI
 
 from app.database.connection import probar_conexion
 from app.routers.auth import router as auth_router
+
+
+# ---------------------------------------------------------------------------
+# Prefijo global de la API
+# ---------------------------------------------------------------------------
+# Cambiar aqui cuando se cree /api/v2 para no tocar los routers.
+# ---------------------------------------------------------------------------
+
+API_V1_PREFIX = "/api/v1"
 
 
 # ---------------------------------------------------------------------------
@@ -24,11 +34,11 @@ app = FastAPI(
 # Routers
 # ---------------------------------------------------------------------------
 
-app.include_router(auth_router)
+app.include_router(auth_router, prefix=API_V1_PREFIX)
 
 
 # ---------------------------------------------------------------------------
-# Health checks
+# Health checks (sin prefijo: son infraestructura)
 # ---------------------------------------------------------------------------
 
 @app.get("/", tags=["health"])
