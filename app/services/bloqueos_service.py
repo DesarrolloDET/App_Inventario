@@ -37,6 +37,7 @@ from app.models.programming import BloqueoHorario
 from app.schemas.bloqueos import BloqueoCreate, BloqueoUpdate, TipoBloqueo
 
 
+
 # ---------------------------------------------------------------------------
 # Excepciones propias del service
 # ---------------------------------------------------------------------------
@@ -55,6 +56,9 @@ class BloqueoSolapadoError(BloqueoError):
 
 class RangoInvalidoError(BloqueoError):
     """El rango horario es invalido (hora_fin <= hora_inicio)."""
+
+class BloqueoProtegidoError(BloqueoError):
+    """El bloqueo es obligatorio (ALMUERZO) y no se puede modificar ni desactivar."""    
 
 
 # ---------------------------------------------------------------------------
@@ -237,6 +241,11 @@ def actualizar_bloqueo(
     """
     b = obtener_bloqueo(db, bloqueo_id)
 
+    if b.tipo_bloqueo == TipoBloqueo.ALMUERZO.value:
+        raise BloqueoProtegidoError(
+            "El bloqueo de almuerzo es obligatorio y no se puede modificar."
+        )
+
     # Merge de campos.
     nueva_fecha = datos.fecha if datos.fecha is not None else b.fecha
     nueva_ini = datos.hora_inicio if datos.hora_inicio is not None else b.hora_inicio
@@ -292,6 +301,12 @@ def desactivar_bloqueo(db: Session, bloqueo_id: int) -> BloqueoHorario:
         BloqueoNoEncontradoError: si no existe.
     """
     b = obtener_bloqueo(db, bloqueo_id)
+
+    if b.tipo_bloqueo == TipoBloqueo.ALMUERZO.value:
+        raise BloqueoProtegidoError(
+            "El bloqueo de almuerzo es obligatorio y no se puede desactivar."
+    )
+
     b.activo = False
     db.flush()
     return b
@@ -306,6 +321,13 @@ def reactivar_bloqueo(db: Session, bloqueo_id: int) -> BloqueoHorario:
         BloqueoSolapadoError: si al reactivar se produce solapamiento.
     """
     b = obtener_bloqueo(db, bloqueo_id)
+
+    if b.tipo_bloqueo == TipoBloqueo.ALMUERZO.value:
+        raise BloqueoProtegidoError(
+            "El bloqueo de almuerzo es obligatorio y no se puede reactivar "
+            "(nunca deberia estar inactivo)."
+        )
+
 
     # Al reactivar, otros bloqueos activos podrian solaparse.
     solapado = _buscar_solapamiento(

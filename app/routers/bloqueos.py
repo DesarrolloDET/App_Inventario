@@ -189,6 +189,11 @@ def actualizar_bloqueo(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Bloqueo no encontrado.",
         )
+    except svc.BloqueoProtegidoError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
     except svc.RangoInvalidoError as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -225,6 +230,11 @@ def desactivar_bloqueo(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Bloqueo no encontrado.",
         )
+    except svc.BloqueoProtegidoError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
     return BloqueoResponse.model_validate(b)
 
 
@@ -250,6 +260,11 @@ def reactivar_bloqueo(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Bloqueo no encontrado.",
+        )
+    except svc.BloqueoProtegidoError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
         )
     except svc.BloqueoSolapadoError as exc:
         raise HTTPException(
