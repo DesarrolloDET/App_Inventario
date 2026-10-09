@@ -14,6 +14,8 @@ from app.routers.conductores import router as conductores_router
 from app.routers.transportadoras import router as transportadoras_router
 from app.routers.vehiculos import router as vehiculos_router
 from app.routers.bloqueos import router as bloqueos_router
+from app.routers.programaciones import router as programaciones_router
+from app.routers.programaciones import detalles_router as programaciones_detalles_router
 
 
 # ---------------------------------------------------------------------------
@@ -47,6 +49,8 @@ app.include_router(conductores_router, prefix=API_V1_PREFIX)
 app.include_router(transportadoras_router, prefix=API_V1_PREFIX)
 app.include_router(vehiculos_router, prefix=API_V1_PREFIX)
 app.include_router(bloqueos_router, prefix=API_V1_PREFIX)
+app.include_router(programaciones_router, prefix=API_V1_PREFIX)
+app.include_router(programaciones_detalles_router, prefix=API_V1_PREFIX)
 
 # ---------------------------------------------------------------------------
 # Health checks (sin prefijo: son infraestructura)

@@ -43,6 +43,7 @@ from __future__ import annotations
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
+from datetime import date
 
 from app.models.programming import Programacion, ProgramacionDetalle
 from app.models.security import Usuario
@@ -110,15 +111,21 @@ def listar_programaciones(
     offset: int,
     limit: int,
     estado: EstadoProgramacion | None = None,
+    fecha_desde: date | None = None,
+    fecha_hasta: date | None = None,
 ) -> tuple[list[Programacion], int]:
     """
-    Lista programaciones con paginacion.
+    Lista programaciones con paginacion y filtros opcionales.
 
     Args:
         db: sesion SQLAlchemy.
         offset: registros a saltar.
         limit: cantidad maxima a devolver.
-        estado: si se especifica, filtra por ese estado.
+        estado: si se especifica, filtra por estado.
+        fecha_desde: si se especifica, incluye programaciones cuya
+                     fecha_inicio >= fecha_desde.
+        fecha_hasta: si se especifica, incluye programaciones cuya
+                     fecha_fin <= fecha_hasta.
 
     Returns:
         (items, total): items de la pagina actual y total del universo.
@@ -127,6 +134,12 @@ def listar_programaciones(
 
     if estado is not None:
         base = base.where(Programacion.estado == estado.value)
+
+    if fecha_desde is not None:
+        base = base.where(Programacion.fecha_inicio >= fecha_desde)
+
+    if fecha_hasta is not None:
+        base = base.where(Programacion.fecha_fin <= fecha_hasta)
 
     total = db.execute(
         select(func.count()).select_from(base.subquery())

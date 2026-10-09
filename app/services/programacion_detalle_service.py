@@ -576,3 +576,25 @@ def eliminar_detalle(db: Session, detalle_id: int) -> None:
         raise DependenciaOperativaError(
             "No se puede eliminar el detalle: algun cupo tiene citas asociadas."
         ) from exc
+    
+def listar_cupos_de_detalle(
+    db: Session,
+    detalle_id: int,
+) -> list[Cupo]:
+    """
+    Lista los cupos asociados a un detalle, ordenados por hora_inicio.
+
+    Args:
+        db: sesion.
+        detalle_id: ID del detalle.
+
+    Returns:
+        Lista de Cupo ordenados por hora de inicio.
+    """
+    return list(
+        db.execute(
+            select(Cupo)
+            .where(Cupo.programacion_detalle_id == detalle_id)
+            .order_by(Cupo.hora_inicio.asc())
+        ).scalars().all()
+    )
