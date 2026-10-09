@@ -8,6 +8,7 @@ from fastapi import FastAPI
 
 from app.database.connection import probar_conexion
 from app.routers.auth import router as auth_router
+from app.routers.puertos import router as puertos_router
 
 
 # ---------------------------------------------------------------------------
@@ -35,6 +36,7 @@ app = FastAPI(
 # ---------------------------------------------------------------------------
 
 app.include_router(auth_router, prefix=API_V1_PREFIX)
+app.include_router(puertos_router, prefix=API_V1_PREFIX)
 
 
 # ---------------------------------------------------------------------------
